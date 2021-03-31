@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    	<report
+            string="Stock Report"
+            id="report_warehouse_id"
+            model="report.warehouse"
+            report_type="qweb-pdf"
+            name="report_warehouse.warehouse_report"
+            file="report_warehouse.warehouse_report"
+        />
+    </data>
+</openerp>

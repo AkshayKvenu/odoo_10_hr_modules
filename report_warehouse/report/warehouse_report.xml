@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_warehouse.warehouse_report">
+            <t t-call="report.html_container">
+                <t t-set="data_report_margin_top" t-value="5"/>
+                <t t-set="data_report_margin_left" t-value="2"/>
+                <t t-set="data_report_margin_rigth" t-value="2"/>
+                <t t-set="data_report_header_spacing" t-value="2"/>
+                <t t-set="data_report_dpi" t-value="110"/>
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="row" style="width: 4%; padding:2%"></div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-2">
+                                    <div class="row">
+                                        <img class="image" t-att-src="'data:image/png;base64,%s' % res_company.logo" style="border:auto;"/>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1"></div>
+                                <div class="col-xs-9" style="font-size:15px;"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-3"></div>
+                                <div class="col-xs-6">
+                                    <p><u><h1>Warehouse report</h1></u></p>
+                                </div>
+                                <div class="col-xs-1"></div>
+                                <div class="col-xs-2"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                  <table class="table-condensed" width="100%" style="font-size:13px;">
+                                        <tr>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Operation date</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Operation type</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Created by</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Destination Address</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Source Location</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Destination Location</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Product category</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Product</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">Company</td>
+                                            <td style="text-align:center;border:1px solid black;vertical-align:middle;">quantity</td>
+                                        </tr>
+                                        <t t-set="products" t-value="[]"/>
+                                        <t t-foreach="o.line_ids" t-as="l">
+                                            <t t-set="products" t-value="products+[l.product_id]"/>
+                                        </t>
+                                        <t t-foreach="set(products)" t-as="product">
+                                            <t t-set="quantity_negative" t-value="0"/>
+                                            <t t-set="quantity_positive" t-value="0"/>
+                                            <t t-set="quantity_total" t-value="0"/>
+                                            <t t-foreach="o.line_ids" t-as="w">
+                                                <t t-if="product.id==w.product_id.id">
+                                                    <tr>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.date"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.picking_type_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.create_uid"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.partner_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.location_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.location_dest_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.categ_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.product_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.company_id"/></td>
+                                                        <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-field="w.quantity"/></td>
+                                                        <t t-if="(w.quantity &gt;= 0)">
+                                                            <t t-set="quantity_positive" t-value="quantity_positive + w.quantity"/>
+                                                        </t>
+                                                        <t t-if="(w.quantity  &lt; 0)">
+                                                            <t t-set="quantity_negative" t-value="quantity_negative + w.quantity"/>
+                                                        </t>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                            <t t-set="quantity_total" t-value="quantity_positive + quantity_negative"/>
+                                            <tr>
+                                                <td colspan="8" nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;background-color:grey"></td>
+                                                <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><strong>Total</strong></td>
+                                                <td nowrap="true" style="text-align:center;border:1px solid black;vertical-align:middle;"><span t-esc="'%.2f'%(quantity_total)"/></td>
+                                            </tr>
+                                        </t>
+
+                                  </table>
+                            </div>
+                         </div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-4 col-xs-offset-6">Report date&#032;&#032;<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d / %m / %Y')"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

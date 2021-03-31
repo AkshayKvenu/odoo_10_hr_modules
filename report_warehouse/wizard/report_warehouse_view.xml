@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_wizard_report_warehouse" model="ir.ui.view">
+            <field name="name">Stock report</field>
+            <field name="model">report.warehouse</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="choice" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="product_id" attrs="{'invisible': [('choice','=', 'all')]}"/>
+                            <field name="categ_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="print_payment_report" string="Print" type="object"  class="oe_highlight"  />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_wizard_stock_report_warehouse" model="ir.actions.act_window">
+            <field name="name">Report warehouse</field>
+            <field name="res_model">report.warehouse</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_wizard_report_warehouse"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="main_menu_report_warehouse" name="Warehouse report" web_icon="report_warehouse,static/description/icon.png"/>
+        <menuitem id="menu_action_wizard_report_warehouse" action="action_wizard_stock_report_warehouse" parent="stock.menu_warehouse_report" sequence="1"/>
+    </data>
+</openerp>
