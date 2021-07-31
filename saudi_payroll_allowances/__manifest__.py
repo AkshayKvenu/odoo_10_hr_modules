@@ -22,7 +22,7 @@
 
 {
     'name': 'Saudi Payroll Allowances',
-    'version': '1.13.20.1',
+    'version': '1.13.20.2',
     'category': 'hr',
     'summary': 'Saudi Payroll Allowances',
     'description':'Saudi Payroll Allowances',
@@ -37,7 +37,7 @@
                 'account',
             ],
     'data': [
-                'security/saudi_payroll_security.xml',
+#                 'security/saudi_payroll_security.xml',
                 'security/ir.model.access.csv',
                 'views/hr_views.xml',
                 'views/hr_payslip_views.xml',
